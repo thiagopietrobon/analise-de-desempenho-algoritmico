@@ -1,5 +1,3 @@
-# analise-de-desempenho-algorotmico
-
 # Análise de Desempenho Algorítmico
 
 Repositório dedicado à implementação, medição de tempo de execução e análise gráfica de desempenho de algoritmos, com foco no comportamento do **Quicksort**.
