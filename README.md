@@ -99,7 +99,7 @@ Para `N = 16.000`:
 | 🎲 Pivô aleatório | Aleatória | **0,0237 s** |
 | 🎲 Pivô aleatório | Ordenada  | **0,0219 s** |
 | ⚙️ Pivô fixo      | Aleatória | **0,0191 s** |
-| ⚠️ Pivô fixo      | Ordenada  | **3,8570 s** |
+| ⚙️ Pivô fixo      | Ordenada  | **3,8570 s** |
 
 Os valores acima são provenientes dos resultados armazenados no CSV do projeto.
 
