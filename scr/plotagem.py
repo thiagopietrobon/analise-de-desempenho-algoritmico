@@ -1,6 +1,10 @@
+import os
 import matplotlib.pyplot as plt
 
-def plot_results(sizes, results, output_filename="quicksort_benchmark.png"):
+def plot_results(sizes, results, output_dir="graficos", filename="quicksort_testes.png"):
+    os.makedirs(output_dir, exist_ok=True)
+    filepath = os.path.join(output_dir, filename)
+
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
     # Entrada Aleatória
@@ -22,5 +26,5 @@ def plot_results(sizes, results, output_filename="quicksort_benchmark.png"):
     axes[1].legend()
 
     plt.tight_layout()
-    plt.savefig(output_filename)
-    print(f"\nGráfico salvo com sucesso como '{output_filename}'.")
+    plt.savefig(filepath)
+    print(f"Gráfico salvo com sucesso em: '{filepath}'")
