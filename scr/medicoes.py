@@ -1,7 +1,7 @@
 import random
 import time
 import statistics
-from algorithms import quicksort_fixed, quicksort_random
+from quicksort import quicksort_fixed, quicksort_random
 
 def run_benchmark(sizes, seed=42):
     random.seed(seed)
