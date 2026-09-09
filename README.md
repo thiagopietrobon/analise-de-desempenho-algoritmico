@@ -1,5 +1,7 @@
 # Análise de Desempenho Algorítmico
 
+![Banner do projeto](img/banner.jfif)
+
 Repositório dedicado à implementação, medição de tempo de execução e análise gráfica de desempenho de algoritmos, com foco no comportamento do **Quicksort**.
 
 ## 📁 Estrutura do Repositório
