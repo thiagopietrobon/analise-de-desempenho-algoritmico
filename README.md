@@ -193,7 +193,7 @@ analise-de-desempenho-algoritmico/
 │
 ├── 📁 img/
 │
-├── 📁 scr/
+├── 📁 src/
 │   ├── main.py
 │   ├── quicksort.py
 │   ├── medicoes.py
@@ -258,7 +258,7 @@ pip install -r requirements.txt
 ### 4. Execute o benchmark
 
 ```bash
-cd scr
+cd src
 python main.py
 ```
 
