@@ -2,7 +2,7 @@
   const byId = id => document.getElementById(id);
   const report = byId('labInterpretation');
   if (!report) return;
-  // script.js ainda preenche esse destino; mantém-no oculto para evitar erro sem repetir a lista na tela.
+  // Mantém o destino interno usado pelo script principal, sem exibir a lista novamente.
   if (!byId('sortedOutput')) {
     const output = document.createElement('pre');
     output.id = 'sortedOutput';
@@ -34,26 +34,19 @@
   addSectionNav(); byId('prepareLab')?.addEventListener('click', () => setTimeout(update, 0));
 })();
 
-// Gráfico acumulativo: médias medidas e referências teóricas normalizadas.
+// Gráfico de barras compacto para comparar os tempos desta execução.
 (() => {
-  const canvas = document.getElementById('labChart'), input = document.getElementById('userInput'), button = document.getElementById('prepareLab');
-  if (!canvas || !input || !button || typeof Chart === 'undefined') return;
-  const measurements = new Map(); let chart;
+  const canvas = document.getElementById('labChart'), button = document.getElementById('prepareLab');
+  if (!canvas || !button || typeof Chart === 'undefined') return;
+  let chart;
   button.addEventListener('click', () => window.setTimeout(() => {
-    const n = input.value.trim().split(/[\s,;]+/).filter(Boolean).length;
     const fixed = Number(document.getElementById('fixedTime')?.textContent), random = Number(document.getElementById('randomTime')?.textContent);
-    if (n < 2 || !Number.isFinite(fixed) || !Number.isFinite(random)) return;
-    const prior = measurements.get(n) || { fixed: [], random: [] }; prior.fixed.push(fixed); prior.random.push(random); measurements.set(n, prior);
-    const points = [...measurements.entries()].sort((a,b) => a[0]-b[0]).map(([size,t]) => ({ n:size, fixed:t.fixed.reduce((a,b)=>a+b,0)/t.fixed.length, random:t.random.reduce((a,b)=>a+b,0)/t.random.length }));
-    const maxN = points[points.length-1].n, maxT = Math.max(...points.flatMap(p=>[p.fixed,p.random]), Number.EPSILON);
-    const normalized = fn => points.map(p => ({ x:p.n, y:maxT*fn(p.n)/fn(maxN) }));
-    const previous = Chart.getChart(canvas); if (previous) previous.destroy(); if (chart) chart.destroy();
-    chart = new Chart(canvas, { type:'line', data:{ datasets:[
-      {label:'Pivô fixo · média medida',data:points.map(p=>({x:p.n,y:p.fixed})),borderColor:'#60a5fa',backgroundColor:'#60a5fa',showLine:true,pointRadius:4,pointHoverRadius:6,tension:.2},
-      {label:'Pivô aleatório · média medida',data:points.map(p=>({x:p.n,y:p.random})),borderColor:'#4ade80',backgroundColor:'#4ade80',showLine:true,pointRadius:4,pointHoverRadius:6,tension:.2},
-      {label:'Referência n log₂ n (normalizada)',data:normalized(n=>n*Math.log2(n)),borderColor:'#fbbf24',borderDash:[6,4],pointRadius:0,showLine:true,tension:0},
-      {label:'Referência n² (normalizada)',data:normalized(n=>n*n),borderColor:'#c084fc',borderDash:[6,4],pointRadius:0,showLine:true,tension:0}
-    ]}, options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'nearest',intersect:false},scales:{x:{type:'linear',title:{display:true,text:'Tamanho da entrada (N)'},ticks:{color:'#9aa6b8'},grid:{color:'#252d3b'}},y:{title:{display:true,text:'Tempo (segundos)'},ticks:{color:'#9aa6b8'},grid:{color:'#252d3b'}}},plugins:{legend:{labels:{color:'#eef2f8'}},tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.parsed.y.toFixed(6)} s`}}}}});
-    let note=document.getElementById('labChartNote'); if(!note){note=document.createElement('p');note.id='labChartNote';note.className='hint';canvas.parentElement.after(note);} note.textContent=points.length===1?'Há apenas um tamanho de entrada registrado: o gráfico mostra os pontos, mas ainda não há segmentos para formar uma tendência. Prepare a bancada com outros valores de N para conectar os resultados. As referências são teóricas e normalizadas.':'As linhas conectam as médias registradas para cada tamanho de entrada. As curvas n log₂ n e n² são referências teóricas normalizadas, não medições.';
-  },0));
+    if (!Number.isFinite(fixed) || !Number.isFinite(random)) return;
+    if (chart) chart.destroy();
+    chart = new Chart(canvas, {
+      type: 'bar',
+      data: { labels: ['Pivô fixo', 'Pivô aleatório'], datasets: [{ label: 'Tempo (segundos)', data: [fixed, random], backgroundColor: ['#60a5fa', '#4ade80'], borderRadius: 5, maxBarThickness: 58 }] },
+      options: { indexAxis: 'x', responsive: true, maintainAspectRatio: false, animation: { duration: 450 }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${c.parsed.y.toFixed(6)} s` } } }, scales: { x: { ticks: { color: '#9aa6b8' }, grid: { display: false } }, y: { beginAtZero: true, title: { display: true, text: 'Tempo (segundos)', color: '#9aa6b8' }, ticks: { color: '#9aa6b8' }, grid: { color: '#252d3b' } } } }
+    });
+  }, 0));
 })();
