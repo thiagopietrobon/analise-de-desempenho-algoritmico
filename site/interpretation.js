@@ -15,26 +15,19 @@
     const fixedText = byId('fixedTime')?.textContent.trim();
     const randomText = byId('randomTime')?.textContent.trim();
     if (!fixedText || !randomText || fixedText === '—' || randomText === '—') return;
-
     const fixed = Number(fixedText);
     const random = Number(randomText);
     if (!Number.isFinite(fixed) || !Number.isFinite(random)) return;
 
     const raw = byId('userInput')?.value.trim() || '';
-    const count = raw ? raw.split(/[\s,;]+/).filter(Boolean).length : 0;
-    const paragraphs = [];
-    paragraphs.push(`Nesta sessão foram medidos ${number(count)} valores. O pivô fixo levou ${fixedText} s e o pivô aleatório levou ${randomText} s; a diferença observada foi de ${Math.abs(fixed - random).toFixed(6)} s.`);
-
+    const tokens = raw ? raw.split(/[\s,;]+/).filter(Boolean) : [];
+    const count = tokens.length;
+    const paragraphs = [`Nesta sessão foram medidos ${number(count)} valores. O pivô fixo levou ${fixedText} s e o pivô aleatório levou ${randomText} s; a diferença observada foi de ${Math.abs(fixed - random).toFixed(6)} s.`];
     const fixedMetrics = metricText('fixed');
     const randomMetrics = metricText('random');
-    if (fixedMetrics && randomMetrics) {
-      paragraphs.push(`Métricas da animação — pivô fixo: ${fixedMetrics}. Pivô aleatório: ${randomMetrics}.`);
-    }
-
+    if (fixedMetrics && randomMetrics) paragraphs.push(`Métricas da animação — pivô fixo: ${fixedMetrics}. Pivô aleatório: ${randomMetrics}.`);
     paragraphs.push('A medição de tempo e a animação são execuções separadas. Como o pivô aleatório é sorteado novamente, os contadores exibidos na animação não descrevem necessariamente a execução cronometrada. A profundidade máxima refere-se à recursão da visualização, não à pilha do algoritmo iterativo cronometrado.');
-    if (count > 1 && new Set(raw.split(/[\s,;]+/).filter(Boolean)).size < count) {
-      paragraphs.push('A entrada contém valores repetidos; isso também influencia as partições produzidas por esta implementação.');
-    }
+    if (count > 1 && new Set(tokens.map(Number)).size < count) paragraphs.push('A entrada contém valores repetidos; isso também influencia as partições produzidas por esta implementação.');
 
     report.replaceChildren();
     const heading = document.createElement('h4');
@@ -47,7 +40,6 @@
     });
   }
 
-  const observer = new MutationObserver(update);
-  observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+  // O listener principal prepara a bancada primeiro; atualizamos depois dele.
   byId('prepareLab')?.addEventListener('click', () => setTimeout(update, 0));
 })();
