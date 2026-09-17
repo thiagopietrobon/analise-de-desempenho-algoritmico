@@ -274,7 +274,7 @@ function advance(side) {
     if (l.index < l.events.length - 1) l.index++;
     draw(side);
 }
-let animationSpeed = 3;
+let animationSpeed = "medium";
 function play(side) {
     const l = labs[side];
     if (!l.events.length) return;
