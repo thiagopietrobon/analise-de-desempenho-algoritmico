@@ -6,9 +6,9 @@
   function addSectionNav() {
     if (document.getElementById('sectionRail')) return;
     const nav = document.createElement('nav'); nav.id = 'sectionRail'; nav.className = 'section-rail'; nav.setAttribute('aria-label', 'Navegação pelas seções');
-    nav.innerHTML = '<span class="section-rail-title">SEÇÕES</span><a href="#inicio">Início</a><a href="#resultados">Resultados</a><a href="#laboratorio">Bancada</a><a href="#metodologia">Metodologia</a>'; document.body.appendChild(nav);
+    nav.innerHTML = '<a href="#inicio" aria-label="Início" title="Início"></a><a href="#resultados" aria-label="Gráficos" title="Gráficos"></a><a href="#laboratorio" aria-label="Bancada" title="Bancada"></a><a href="#metodologia" aria-label="Metodologia" title="Metodologia"></a>'; document.body.appendChild(nav);
     const links = [...nav.querySelectorAll('a')], sections = links.map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
-    if ('IntersectionObserver' in window) { const observer = new IntersectionObserver(entries => entries.forEach(entry => { if (!entry.isIntersecting) return; links.forEach(link => { const active = link.getAttribute('href') === `#${entry.target.id}`; link.classList.toggle('is-current', active); if (active) link.setAttribute('aria-current', 'location'); else link.removeAttribute('aria-current'); }); }), { rootMargin: '-20% 0px -65% 0px' }); sections.forEach(section => observer.observe(section)); }
+    if ('IntersectionObserver' in window) { const observer = new IntersectionObserver(entries => entries.forEach(entry => { if (!entry.isIntersecting) return; links.forEach(link => { const active = link.getAttribute('href') === `#${entry.target.id}`; link.classList.toggle('is-current', active); if (active) link.setAttribute('aria-current', 'location'); else link.removeAttribute('aria-current'); }); }), { rootMargin: '-25% 0px -60% 0px' }); sections.forEach(section => observer.observe(section)); }
   }
   function block(title, content, className) { const section = document.createElement('section'); section.className = `reading-block ${className || ''}`; const h = document.createElement('h5'); h.textContent = title; const p = document.createElement('p'); p.textContent = content; section.append(h, p); return section; }
   function update() {
@@ -29,7 +29,7 @@
   addSectionNav(); byId('prepareLab')?.addEventListener('click', () => setTimeout(update, 0));
 })();
 
-// Substitui o gráfico local de barras por uma curva acumulada de medições reais.
+// Gráfico acumulativo: médias medidas e referências teóricas normalizadas.
 (() => {
   const canvas = document.getElementById('labChart'), input = document.getElementById('userInput'), button = document.getElementById('prepareLab');
   if (!canvas || !input || !button || typeof Chart === 'undefined') return;
