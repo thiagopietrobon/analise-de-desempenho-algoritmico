@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="pt-BR">
     <head>
-        <!-- Metadados básicos e descrição da página. -->
+        <!-- Metadados básicos e informações para mecanismos de busca. -->
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta
@@ -10,19 +10,17 @@
         />
         <title>Quicksort Lab</title>
 
-        <!-- Folhas de estilo e scripts do laboratório. -->
+        <!-- Estilo único da aplicação e biblioteca de gráficos. -->
         <link rel="stylesheet" href="style.css" />
-        <link rel="stylesheet" href="terminal.css" />
-        <link rel="stylesheet" href="lab-theme.css" />
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script src="script.js" defer></script>
-        <script src="interpretation.js" defer></script>
-        <script src="lab-ui-fixes.js" defer></script>
+        <script type="module" src="script.js"></script>
     </head>
+
     <body>
-        <!-- Cabeçalho com marca e navegação entre seções. -->
+        <!-- Cabeçalho fixo com a navegação principal. -->
         <header>
             <a class="brand" href="#inicio">Q<span>uicksort Lab</span></a>
+
             <nav aria-label="Navegação principal">
                 <a href="#resultados">Dados do experimento</a>
                 <a href="#laboratorio">Bancada</a>
@@ -30,9 +28,10 @@
                 <a
                     href="https://github.com/thiagopietrobon/analise-de-desempenho-algoritmico"
                     target="_blank"
-                    rel="noreferrer"
-                    >GitHub ↗</a
+                    rel="noopener noreferrer"
                 >
+                    GitHub ↗
+                </a>
             </nav>
         </header>
 
@@ -40,16 +39,19 @@
             <!-- Apresentação e atalhos para as áreas principais. -->
             <section class="hero" id="inicio">
                 <p class="eyebrow">LABORATÓRIO EXPERIMENTAL · ALGORITMOS</p>
+
                 <h1>Investigue o que acontece quando o <em>pivô muda.</em></h1>
+
                 <p>
                     Uma experiência prática sobre o Quicksort: observe medições
                     já realizadas, formule hipóteses e teste como diferentes
                     entradas alteram o comportamento da ordenação.
                 </p>
+
                 <a class="button" href="#laboratorio">Entrar na bancada ↓</a>
-                <a class="text-link" href="#resultados"
-                    >Consultar resultados medidos ↘</a
-                >
+                <a class="text-link" href="#resultados">
+                    Consultar resultados medidos ↘
+                </a>
             </section>
 
             <!-- Indicadores resumidos do experimento. -->
@@ -59,11 +61,13 @@
                     <strong>04</strong>
                     <span>Estratégias de pivô e entradas</span>
                 </article>
+
                 <article>
                     <small>ESCALA REGISTRADA</small>
                     <strong>1k–16k</strong>
                     <span>Elementos por execução no CSV</span>
                 </article>
+
                 <article>
                     <small>EXPERIMENTO INTERATIVO</small>
                     <strong>Local</strong>
@@ -71,7 +75,7 @@
                 </article>
             </section>
 
-            <!-- Resultados históricos carregados do CSV do projeto. -->
+            <!-- Dados históricos carregados do CSV do projeto. -->
             <section class="section" id="resultados">
                 <div class="heading">
                     <p class="eyebrow">01 / CADERNO DE MEDIÇÕES</p>
@@ -93,6 +97,7 @@
                                 <option>Aleatório</option>
                             </select>
                         </label>
+
                         <label>
                             Entrada
                             <select id="scenario">
@@ -101,6 +106,7 @@
                                 <option>Ordenada</option>
                             </select>
                         </label>
+
                         <label>
                             Escala
                             <select id="scale">
@@ -108,10 +114,12 @@
                                 <option value="logarithmic">Logarítmica</option>
                             </select>
                         </label>
+
                         <button class="secondary" id="reset" type="button">
                             Limpar filtros
                         </button>
                     </div>
+
                     <div class="chart-wrap">
                         <canvas
                             id="resultsChart"
@@ -133,6 +141,7 @@
                                     <th>Crescimento</th>
                                 </tr>
                             </thead>
+
                             <tbody id="resultsBody">
                                 <tr>
                                     <td colspan="5">Carregando CSV…</td>
@@ -140,14 +149,16 @@
                             </tbody>
                         </table>
                     </div>
+
                     <div id="tableStatus" aria-live="polite"></div>
+
                     <button id="download" class="secondary" type="button">
-                        Baixar CSV ↓
+                        Baixar CSV completo ↓
                     </button>
                 </div>
             </section>
 
-            <!-- Laboratório local: entrada, configuração e execução animada. -->
+            <!-- Bancada local: entrada, configuração, animação e medição. -->
             <section class="section" id="laboratorio">
                 <div class="heading">
                     <p class="eyebrow">02 / BANCADA INTERATIVA</p>
@@ -159,10 +170,11 @@
                 </div>
 
                 <div class="panel controls">
-                    <label for="userInput"
-                        >Entrada manual (números separados por vírgula, espaço
-                        ou ponto e vírgula)</label
-                    >
+                    <label for="userInput">
+                        Entrada manual (números separados por vírgula, espaço
+                        ou ponto e vírgula)
+                    </label>
+
                     <textarea
                         id="userInput"
                         rows="3"
@@ -180,6 +192,7 @@
                                 value="16"
                             />
                         </label>
+
                         <label>
                             Distribuição
                             <select id="inputType">
@@ -197,143 +210,215 @@
                         <button id="generate" class="secondary" type="button">
                             Gerar entrada
                         </button>
+
                         <button id="prepareLab" class="button" type="button">
                             Preparar bancada ↻
                         </button>
                     </div>
 
-                    <label for="speed">
-                        Velocidade da animação
-                        <span id="speedLabel">Média</span>
-                        <input
-                            id="speed"
-                            type="range"
-                            min="1"
-                            max="5"
-                            value="3"
-                        />
-                    </label>
-                    <p class="hint">
-                        A animação aceita até 30 elementos. A medição
-                        instantânea aceita até 20.000 valores.
-                    </p>
                     <p id="labStatus" aria-live="polite">
                         Gere ou digite uma entrada e prepare a bancada.
                     </p>
                 </div>
 
-                <!-- Bancadas lado a lado para comparar as estratégias de pivô. -->
-                <div class="lab-grid step-grid">
-                    <article class="panel step-panel" data-algorithm="fixed">
-                        <div class="step-heading">
-                            <div>
-                                <p class="eyebrow">BANCADA A</p>
-                                <h3>Quicksort · pivô fixo</h3>
-                            </div>
-                            <span class="status-pill" id="fixedState"
-                                >Pronto</span
-                            >
-                        </div>
-                        <div
-                            class="bar-stage"
-                            id="fixedBars"
-                            aria-label="Visualização dos valores com pivô fixo"
-                        ></div>
-                        <p
-                            class="step-event"
-                            id="fixedEvent"
-                            aria-live="polite"
-                        >
-                            Prepare uma entrada para começar.
-                        </p>
-                        <div class="step-controls">
-                            <button class="button step-run" data-side="fixed">
-                                Executar
-                            </button>
-                            <button
-                                class="secondary step-pause"
-                                data-side="fixed"
-                            >
-                                Pausar
-                            </button>
-                            <button
-                                class="secondary step-next"
-                                data-side="fixed"
-                            >
-                                Avançar passo
-                            </button>
-                            <button
-                                class="secondary step-reset"
-                                data-side="fixed"
-                            >
-                                Reiniciar
-                            </button>
-                        </div>
-                        <p class="step-count" id="fixedCount">Passo 0</p>
-                    </article>
+                <!-- Área única da comparação: bancadas + controle compartilhado. -->
+                <div class="comparison-panel">
+                    <div class="lab-grid step-grid">
+                        <article class="panel step-panel">
+                            <div class="step-heading">
+                                <div>
+                                    <p class="eyebrow">BANCADA A</p>
+                                    <h3>Quicksort · pivô fixo</h3>
+                                </div>
 
-                    <article class="panel step-panel" data-algorithm="random">
-                        <div class="step-heading">
-                            <div>
-                                <p class="eyebrow">BANCADA B</p>
-                                <h3>Quicksort · pivô aleatório</h3>
+                                <span class="status-pill" id="fixedState">
+                                    Pronto
+                                </span>
                             </div>
-                            <span class="status-pill" id="randomState"
-                                >Pronto</span
+
+                            <div
+                                class="bar-stage"
+                                id="fixedBars"
+                                role="img"
+                                aria-label="Visualização dos valores com pivô fixo"
+                            ></div>
+
+                            <p
+                                class="step-event"
+                                id="fixedEvent"
+                                aria-live="polite"
                             >
+                                Prepare uma entrada para começar.
+                            </p>
+
+                            <div class="step-controls">
+                                <button class="button step-run" data-side="fixed">
+                                    Executar
+                                </button>
+
+                                <button
+                                    class="secondary step-pause"
+                                    data-side="fixed"
+                                >
+                                    Pausar
+                                </button>
+
+                                <button
+                                    class="secondary step-next"
+                                    data-side="fixed"
+                                >
+                                    Avançar passo
+                                </button>
+
+                                <button
+                                    class="secondary step-reset"
+                                    data-side="fixed"
+                                >
+                                    Reiniciar
+                                </button>
+                            </div>
+
+                            <p class="step-count" id="fixedCount">Passo 0</p>
+                        </article>
+
+                        <article class="panel step-panel">
+                            <div class="step-heading">
+                                <div>
+                                    <p class="eyebrow">BANCADA B</p>
+                                    <h3>Quicksort · pivô aleatório</h3>
+                                </div>
+
+                                <span class="status-pill" id="randomState">
+                                    Pronto
+                                </span>
+                            </div>
+
+                            <div
+                                class="bar-stage"
+                                id="randomBars"
+                                role="img"
+                                aria-label="Visualização dos valores com pivô aleatório"
+                            ></div>
+
+                            <p
+                                class="step-event"
+                                id="randomEvent"
+                                aria-live="polite"
+                            >
+                                Prepare uma entrada para começar.
+                            </p>
+
+                            <div class="step-controls">
+                                <button class="button step-run" data-side="random">
+                                    Executar
+                                </button>
+
+                                <button
+                                    class="secondary step-pause"
+                                    data-side="random"
+                                >
+                                    Pausar
+                                </button>
+
+                                <button
+                                    class="secondary step-next"
+                                    data-side="random"
+                                >
+                                    Avançar passo
+                                </button>
+
+                                <button
+                                    class="secondary step-reset"
+                                    data-side="random"
+                                >
+                                    Reiniciar
+                                </button>
+                            </div>
+
+                            <p class="step-count" id="randomCount">Passo 0</p>
+                        </article>
+                    </div>
+
+                    <!-- Controle compartilhado de velocidade das duas bancadas. -->
+                    <div class="speed-control">
+                        <div class="speed-heading">
+                            <div>
+                                <p class="eyebrow">CONTROLE DA ANIMAÇÃO</p>
+                                <h3>Velocidade da comparação</h3>
+                            </div>
+                            <strong id="speedLabel" aria-live="polite">5×</strong>
                         </div>
+
                         <div
-                            class="bar-stage"
-                            id="randomBars"
-                            aria-label="Visualização dos valores com pivô aleatório"
-                        ></div>
-                        <p
-                            class="step-event"
-                            id="randomEvent"
-                            aria-live="polite"
+                            class="speed-options"
+                            id="speedOptions"
+                            role="group"
+                            aria-label="Velocidade da animação"
                         >
-                            Prepare uma entrada para começar.
-                        </p>
-                        <div class="step-controls">
-                            <button class="button step-run" data-side="random">
-                                Executar
+                            <button
+                                type="button"
+                                class="speed-option"
+                                data-speed="1"
+                                aria-pressed="false"
+                            >
+                                1×
                             </button>
                             <button
-                                class="secondary step-pause"
-                                data-side="random"
+                                type="button"
+                                class="speed-option"
+                                data-speed="2"
+                                aria-pressed="false"
                             >
-                                Pausar
+                                2×
                             </button>
                             <button
-                                class="secondary step-next"
-                                data-side="random"
+                                type="button"
+                                class="speed-option is-selected"
+                                data-speed="5"
+                                aria-pressed="true"
                             >
-                                Avançar passo
+                                5×
                             </button>
                             <button
-                                class="secondary step-reset"
-                                data-side="random"
+                                type="button"
+                                class="speed-option"
+                                data-speed="10"
+                                aria-pressed="false"
                             >
-                                Reiniciar
+                                10×
+                            </button>
+                            <button
+                                type="button"
+                                class="speed-option"
+                                data-speed="20"
+                                aria-pressed="false"
+                            >
+                                20×
                             </button>
                         </div>
-                        <p class="step-count" id="randomCount">Passo 0</p>
-                    </article>
+
+                        <p class="hint" id="speedHint">
+                            A mesma velocidade controla as duas bancadas e pode ser alterada
+                            durante a execução.
+                        </p>
+                    </div>
                 </div>
 
-                <!-- Relatório dos tempos obtidos na sessão local atual. -->
+                <!-- Relatório da medição local desta sessão. -->
                 <div class="panel report-panel">
                     <div class="heading">
                         <p class="eyebrow">RELATÓRIO DA SESSÃO</p>
                         <h3>Tempos medidos</h3>
                     </div>
+
                     <div class="chart-wrap local-chart-wrap">
                         <canvas
                             id="labChart"
                             role="img"
-                            aria-label="Comparação dos tempos locais do Quicksort com pivô fixo e aleatório"
+                            aria-label="Comparação das medianas locais do Quicksort com pivô fixo e aleatório"
                         ></canvas>
                     </div>
+
                     <button
                         id="exportLocalCsv"
                         class="secondary export-local"
@@ -349,6 +434,7 @@
                             <span>segundos (mediana)</span>
                             <p id="fixedCheck">Aguardando execução</p>
                         </article>
+
                         <article>
                             <small>QUICKSORT · PIVÔ ALEATÓRIO</small>
                             <strong id="randomTime">—</strong>
@@ -365,6 +451,14 @@
                         <h4>Resumo da sessão</h4>
                         <p>Prepare a bancada para comparar os tempos.</p>
                     </section>
+
+                    <!-- Histórico criado durante a visita atual. -->
+                    <section
+                        class="session-history"
+                        id="sessionHistory"
+                        aria-live="polite"
+                        hidden
+                    ></section>
                 </div>
             </section>
 
@@ -388,6 +482,7 @@
                             aproximando o comportamento do pior caso quadrático.
                         </p>
                     </article>
+
                     <article>
                         <h3>Escolha aleatória</h3>
                         <p>
@@ -396,6 +491,7 @@
                             ruins.
                         </p>
                     </article>
+
                     <article>
                         <h3>Experimento ≠ prova</h3>
                         <p>
@@ -420,6 +516,7 @@
             <span>Quicksort Lab · Projeto acadêmico</span>
             <a href="#inicio">Voltar ao topo ↑</a>
         </footer>
+
         <div id="error" class="error" role="alert" hidden></div>
     </body>
 </html>
