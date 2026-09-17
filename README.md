@@ -48,7 +48,9 @@ O **Quicksort Lab** permite visualizar os resultados históricos do experimento,
 
 <div align="center">
 
-[![Quicksort Lab](https://img.shields.io/badge/QUICKSORT_LAB-Acessar_no_GitHub_Pages-63FF9B?style=for-the-badge&logo=github)](https://thiagopietrobon.github.io/analise-de-desempenho-algoritmico/)
+<a href="https://thiagopietrobon.github.io/analise-de-desempenho-algoritmico/" target="_blank" rel="noopener noreferrer">
+  <img src="https://img.shields.io/badge/Acessar%20projeto-GitHub%20Pages-blue?style=for-the-badge&logo=github" alt="Acessar projeto no GitHub Pages">
+</a>
 
 </div>
 
