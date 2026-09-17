@@ -2,6 +2,8 @@ const CSV_URL = '../dados/quicksort_resultados.csv';
 const $ = (id) => document.getElementById(id);
 let rows = [], chart, labChart;
 const palette = ['#60a5fa','#4ade80','#fbbf24','#c084fc'];
+// Animações mais suaves e lentas para facilitar a leitura dos gráficos.
+if (typeof Chart !== 'undefined') Chart.defaults.animation.duration = 1800;
 function parseCSV(text) {
   const lines = text.trim().split(/\r?\n/);
   const headers = lines.shift().split(',');
@@ -26,7 +28,7 @@ function render() {
     return {label:`Pivô ${a.toLowerCase()} · entrada ${s.toLowerCase()}`, data:data.filter(r=>r.algorithm===a&&r.scenario===s).sort((x,y)=>x.n-y.n).map(r=>({x:r.n,y:r.time})), borderColor:color, backgroundColor:color, tension:.2};
   });
   if (chart) chart.destroy();
-  chart = new Chart($('resultsChart'), {type:'line',data:{datasets},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'nearest',intersect:false},scales:{x:{type:'linear',title:{display:true,text:'Tamanho da entrada (N)'},ticks:{color:'#9aa6b8'},grid:{color:'#252d3b'}},y:{type:$('scale').value,title:{display:true,text:'Tempo (segundos)'},ticks:{color:'#9aa6b8'},grid:{color:'#252d3b'}}},plugins:{legend:{labels:{color:'#eef2f8'}},tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.parsed.y.toFixed(6)} s`}}}}});
+  chart = new Chart($('resultsChart'), {type:'line',data:{datasets},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1800},interaction:{mode:'nearest',intersect:false},scales:{x:{type:'linear',title:{display:true,text:'Tamanho da entrada (N)'},ticks:{color:'#9aa6b8'},grid:{color:'#252d3b'}},y:{type:$('scale').value,title:{display:true,text:'Tempo (segundos)'},ticks:{color:'#9aa6b8'},grid:{color:'#252d3b'}}},plugins:{legend:{labels:{color:'#eef2f8'}},tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.parsed.y.toFixed(6)} s`}}}}});
 }
 function showError(message) { const el=$('error'); if(el){el.textContent=message;el.hidden=false;} }
 function quicksort(input, randomPivot) {
@@ -67,7 +69,7 @@ function runLab() {
     $('labStatus').textContent=`Executados ${input.length.toLocaleString('pt-BR')} valores. Medição local do navegador; não compare diretamente com o CSV.`;
     if(typeof Chart==='undefined') throw new Error('A biblioteca dos gráficos não carregou.');
     if(labChart)labChart.destroy();
-    labChart=new Chart($('labChart'),{type:'bar',data:{labels:['Pivô fixo','Pivô aleatório'],datasets:[{label:'Tempo (s)',data:[t1,t2],backgroundColor:[palette[0],palette[1]]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#9aa6b8'}},y:{beginAtZero:true,title:{display:true,text:'Segundos'},ticks:{color:'#9aa6b8'}}}}});
+    labChart=new Chart($('labChart'),{type:'bar',data:{labels:['Pivô fixo','Pivô aleatório'],datasets:[{label:'Tempo (s)',data:[t1,t2],backgroundColor:[palette[0],palette[1]]}]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1800},plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#9aa6b8'}},y:{beginAtZero:true,title:{display:true,text:'Segundos'},ticks:{color:'#9aa6b8'}}}}});
   } catch(e) { $('labStatus').textContent=e.message; }
 }
 function generate() {
