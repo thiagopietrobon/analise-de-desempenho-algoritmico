@@ -19,7 +19,7 @@ import { filterRows, parseCSV, toCsv } from "./js/csv.js";
 import { createAnimationController } from "./js/animation.js";
 
 const CONFIG = Object.freeze({
-    csvUrl: "../dados/quicksort_resultados.csv",
+    csvUrl: "./dados/quicksort_resultados.csv",
     animationMaxSize: 30,
     maxInputSize: 20000,
     largeInputWarning: 10000,
